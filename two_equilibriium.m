@@ -19,7 +19,7 @@ for i = 0:(M-1)
 end
 
 
-T = 100;
+T = 2000;
 
 % res = MWU(R, C, T, eps_r, eps_c, "uniform", "uniform")
 % res = eps_greedy(R, C, T, eps_r, eps_c);
@@ -68,7 +68,8 @@ hold off
 
 
 %%%%%%%%%% BEGIN: count the times of the two NE %%%%%%%%%%%%%%
-res = count_which_NE(M, T, 1000, handle)
+%%%%%%%%%% change T to a big number before running the following 
+% res = count_which_NE(M, T, 1000, handle)
 %%%%%%%%%% END: count the times of the two NE %%%%%%%%%%%%%%
 
 
