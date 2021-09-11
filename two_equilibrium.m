@@ -19,7 +19,7 @@ for i = 0:(M-1)
 end
 
 
-T = 2000;
+T = 20000;
 
 % res = MWU(R, C, T, eps_r, eps_c, "uniform", "uniform")
 % res = eps_greedy(R, C, T, eps_r, eps_c);
@@ -27,8 +27,13 @@ T = 2000;
 c1 = 1; c2 = 1;
 para_func_1 = @(t) c1 / sqrt(t); 
 para_func_2 = @(t) c2 / sqrt(t); 
-handle = @() decreasing_eps_greedy_experts(P1, P2, T, para_func_1, para_func_2); 
-name = "decreasing \epsilon greedy, experts"; 
+
+% handle = @() decreasing_eps_greedy_experts(P1, P2, T, para_func_1, para_func_2); 
+% name = "decreasing \epsilon greedy, experts"; 
+
+handle = @() eps_greedy(P1, P2, T, para_func_1, para_func_2); 
+name = "decreasing \epsilon greedy, bandit"; 
+
 
 
 %%%%%%%%%% BEGIN: show results for once %%%%%%%%%%%%
@@ -69,7 +74,7 @@ hold off
 
 %%%%%%%%%% BEGIN: count the times of the two NE %%%%%%%%%%%%%%
 %%%%%%%%%% change T to a big number before running the following 
-% res = count_which_NE(M, T, 1000, handle)
+res = count_which_NE(M, T, 1000, handle)
 %%%%%%%%%% END: count the times of the two NE %%%%%%%%%%%%%%
 
 

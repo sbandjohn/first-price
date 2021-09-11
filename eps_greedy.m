@@ -1,37 +1,47 @@
-function y = eps_greedy(R, C, T, eps_r, eps_c)
-MR = size(R, 1); MC = size(R, 2); 
+function res = eps_greedy(P1, P2, T, func1, func2)
+M1 = size(P1, 1); M2 = size(P2, 2); 
 
-avg_reward_r = zeros(MR, 1);  count_r = zeros(MR, 1);
-avg_reward_c = zeros(MC, 1);  count_c = zeros(MC, 1); 
+avg_reward_1 = zeros(M1, 1);  count_1 = zeros(M1, 1);  sum_reward_1 = zeros(M1, 1); 
+avg_reward_2 = zeros(M2, 1);  count_2 = zeros(M2, 1);  sum_reward_2 = zeros(M2, 1); 
 
-row_w_s = zeros(MR, T);
-col_w_s = zeros(MC, T);
+
+bid_seq_1 = zeros(1, T); 
+bid_seq_2 = zeros(1, T); 
+
+strategy_seq_1 = zeros(M1, T);
+strategy_seq_2 = zeros(M2, T);
 
 for t = 1:T
-    [max_r, argmax_r] = max(avg_reward_r); 
-    tmp_r = zeros(MR, 1); 
-    tmp_r(argmax_r) = 1;
-    prop_r = eps_r * ones(MR, 1) / MR  +  (1-eps_r) * tmp_r; 
+    [~, argmax_1] = max(avg_reward_1); 
+    eps_1 = func1(t);
+    tmp_1 = zeros(M1, 1); 
+    tmp_1(argmax_1) = 1;
+    prop_1 = eps_1 * ones(M1, 1) / M1  +  (1-eps_1) * tmp_1; 
     
-    [max_c, argmax_c] = max(avg_reward_c); 
-    tmp_c = zeros(MC, 1); 
-    tmp_c(argmax_c) = 1;
-    prop_c = eps_c * ones(MR, 1) / MR  +  (1-eps_c) * tmp_c; 
+    [~, argmax_2] = max(avg_reward_2); 
+    eps_2 = func2(t);
+    tmp_2 = zeros(M2, 1); 
+    tmp_2(argmax_2) = 1;
+    prop_2 = eps_2 * ones(M2, 1) / M2  +  (1-eps_2) * tmp_2; 
     
-    b_r = randsample(MR, 1, true, prop_r);
-    b_c = randsample(MC, 1, true, prop_c);
+    b_1 = randsample(M1, 1, true, prop_1);
+    b_2 = randsample(M2, 1, true, prop_2);
   
-    reward_r = R(b_r, b_c);
-    reward_c = C(b_r, b_c);
+    reward_1 = P1(b_1, b_2);
+    reward_2 = P2(b_1, b_2);
     
-    count_r(b_r) = count_r(b_r) + 1; 
-    avg_reward_r(b_r) = ((count_r(b_r)-1)*avg_reward_r(b_r) + reward_r) / count_r(b_r); 
-    count_c(b_c) = count_c(b_c) + 1;
-    avg_reward_c(b_c) = ((count_c(b_c)-1)*avg_reward_c(b_c) + reward_c) / count_c(b_c);
+    count_1(b_1) = count_1(b_1) + 1; 
+    sum_reward_1(b_1) = sum_reward_1(b_1) + reward_1; 
+    avg_reward_1(b_1) = sum_reward_1(b_1) / count_1(b_1); 
+    count_2(b_2) = count_2(b_2) + 1;
+    sum_reward_2(b_2) = sum_reward_2(b_2) + reward_2; 
+    avg_reward_2(b_2) = sum_reward_2(b_2) / count_2(b_2);
     
-    row_w_s(:, t) = prop_r;
-    col_w_s(:, t) = prop_c;
+    bid_seq_1(t) = b_1;
+    bid_seq_2(t) = b_2; 
+    strategy_seq_1(:, t) = prop_1;
+    strategy_seq_2(:, t) = prop_2;
 end
 
-y = {row_w_s, col_w_s, prop_r, prop_c}; 
+res = {bid_seq_1, bid_seq_2, strategy_seq_1, strategy_seq_2}; 
 end

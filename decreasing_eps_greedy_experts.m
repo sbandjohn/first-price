@@ -28,16 +28,9 @@ for t = 1:T
     
     sum_reward_1 = sum_reward_1 + P1(:, b_2);
     sum_reward_2 = sum_reward_2 + P2(b_1, :)'; 
-    
-    % reward_1 = R(b_r, b_c);
-    % reward_c = C(b_r, b_c);
-    
-    % count_r(b_r) = count_r(b_r) + 1; 
-    % avg_reward_r(b_r) = ((count_r(b_r)-1)*avg_reward_r(b_r) + reward_r) / count_r(b_r); 
-    % count_c(b_c) = count_c(b_c) + 1;
-    % avg_reward_c(b_c) = ((count_c(b_c)-1)*avg_reward_c(b_c) + reward_c) / count_c(b_c);
-    
-    bid_seq_1(t) = b_1;  bid_seq_2(t) = b_2; 
+
+    bid_seq_1(t) = b_1;
+    bid_seq_2(t) = b_2; 
     strategy_seq_1(:, t) = prop_1;
     strategy_seq_2(:, t) = prop_2;
 end
