@@ -1,3 +1,3 @@
 # first-price
-Instruction: run `two_player.m`.
+Instruction: run `two_equilibrium.m`.
 
